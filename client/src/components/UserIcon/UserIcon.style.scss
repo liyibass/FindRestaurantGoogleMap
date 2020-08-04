@@ -1,0 +1,8 @@
+@import "../../styles/base/variables.scss";
+@import "../../styles/base/responsiveMixin.scss";
+
+.UserIcon {
+  font-size: 2rem;
+  @include atSmall {
+  }
+}
