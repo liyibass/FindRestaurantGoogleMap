@@ -21,10 +21,11 @@ router.get("/", async (req, res) => {
 router.get("/restaurant/", async (req, res) => {
   const apiKey = process.env.GOOGLE_MAP_API_KEY;
   try {
-    const search = "restaurant";
+    const search =
+      "%E5%B0%8F%E5%90%83%20OR%20%E5%BF%AB%E9%A4%90%20OR%20%E9%A4%90%E5%BB%B3";
 
     const location = `24.953881,121.225525`;
-    const radius = "2000";
+    const radius = "500";
 
     const fields =
       "name,geometry,formatted_address,business_status,types,photos";

@@ -3,10 +3,11 @@ import "./MapContainer.style.scss";
 import GoogleMapReact from "google-map-react";
 import key from "../../key";
 import UserIcon from "../UserIcon/UserIcon.component";
+import RestaurantIcon from "../RestaurantIcon/RestaurantIcon.component";
 
 const AnyReactComponent = ({ text }) => <div></div>;
 
-function MapContainer(props) {
+function MapContainer({ restaurantList }) {
   const [mapCenter, setMapCenter] = useState({
     lat: 24.953881,
     lng: 121.225525,
@@ -43,12 +44,16 @@ function MapContainer(props) {
         // onBoundsChange={({ map }) => handleCenterChange(map)}
       >
         <UserIcon lat={userPosition.lat} lng={userPosition.lng} />
-
-        <AnyReactComponent
-          lat={userPosition.lat}
-          lng={userPosition.lng}
-          text="My Marker"
-        />
+        {restaurantList.map((restaurant) => {
+          return (
+            <RestaurantIcon
+              key={restaurant.name}
+              name={restaurant.name}
+              lat={restaurant.geometry.location.lat}
+              lng={restaurant.geometry.location.lng}
+            />
+          );
+        })}
       </GoogleMapReact>
     </div>
   );

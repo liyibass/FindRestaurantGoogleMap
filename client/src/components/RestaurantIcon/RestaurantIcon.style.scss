@@ -1,0 +1,32 @@
+@import "../../styles/base/variables.scss";
+@import "../../styles/base/responsiveMixin.scss";
+
+.RestaurantIcon {
+  z-index: 2;
+  display: inline-block;
+
+  font-size: 2rem;
+
+  display: flex;
+  align-items: center;
+  justify-self: start;
+  .info {
+    white-space: nowrap;
+    background-color: wheat;
+    font-size: 1rem;
+    display: none;
+
+    padding: 3px;
+    margin-left: 10px;
+    border-radius: 10px;
+  }
+
+  &:hover {
+    cursor: pointer;
+    .info {
+      display: inline-block;
+    }
+  }
+  @include atSmall {
+  }
+}
