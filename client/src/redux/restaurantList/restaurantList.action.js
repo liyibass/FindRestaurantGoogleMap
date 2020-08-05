@@ -23,9 +23,10 @@ export const fetchRestaurantFailure = (errorMessage) => {
   };
 };
 
-export const fetchRestaurantListFromApi = (searchField) => {
+export const fetchRestaurantListFromApi = (searchField, mapCenter) => {
   return function (dispatch) {
-    const url = `type=${searchField.type}&radius=${searchField.radius}`;
+    console.log(mapCenter);
+    const url = `type=${searchField.type}&radius=${searchField.radius}&lat=${mapCenter.lat}&lng=${mapCenter.lng}`;
     dispatch(fetchRestaurantRequest());
     axios
       .get(`http://localhost:5000/search/${url}`)
@@ -40,3 +41,9 @@ export const fetchRestaurantListFromApi = (searchField) => {
       });
   };
 };
+
+// export const setMapCenter=(newCenter)=>{
+//   return function (dispatch){
+
+//   }
+// }

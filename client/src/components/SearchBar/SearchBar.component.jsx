@@ -5,6 +5,7 @@ import "./SearchBar.style.scss";
 import { fetchRestaurantListFromApi } from "../../redux/restaurantList/restaurantList.action";
 
 function SearchBar() {
+  const mapCenter = useSelector((state) => state.restaurantList.mapCenter);
   const [searchField, setSearchField] = useState({
     type: "小吃",
     radius: 500,
@@ -17,15 +18,14 @@ function SearchBar() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    dispatch(fetchRestaurantListFromApi(searchField));
+    dispatch(fetchRestaurantListFromApi(searchField, mapCenter));
   };
 
   return (
     <div className="SearchBar">
       <form onSubmit={(e) => handleSubmit(e)} action="" className="searchForm">
         <div className="form-group" onChange={(e) => handleChange(e)}>
-          <input type="radio" name="type" value="餐廳" />
+          <input type="radio" name="type" value="餐廳" defaultChecked />
           <label htmlFor="name">餐廳</label>
           <input type="radio" name="type" value="小吃" />
           <label htmlFor="name">小吃</label>

@@ -18,16 +18,16 @@ router.get("/", async (req, res) => {
 router.get("/:searchField", async (req, res) => {
   const apiKey = process.env.GOOGLE_MAP_API_KEY;
 
-  const url = req.params.searchField;
-  let data = queryString.parse(url);
+  let data = queryString.parse(req.params.searchField);
+  data.type = encodeURI(data.type); //中文轉碼
 
-  data.type = encodeURI(data.type);
+  console.log(data);
 
   try {
-    const location = `24.953881,121.225525`;
+    const { type, radius } = data;
+    const location = `${data.lat},${data.lng}`;
     const fields =
       "name,geometry,formatted_address,business_status,types,photos";
-    const { type, radius } = data;
 
     axios
       .get(

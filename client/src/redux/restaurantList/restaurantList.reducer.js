@@ -1,7 +1,12 @@
 import restaurantListTypes from "./restaurantList.type";
 
 const initialState = {
+  mapCenter: {
+    lat: 24.953881,
+    lng: 121.225525,
+  },
   restaurantList: [],
+
   searchField: "",
   loading: false,
   error: "",
