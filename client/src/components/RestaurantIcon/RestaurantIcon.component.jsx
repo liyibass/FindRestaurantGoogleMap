@@ -4,7 +4,7 @@ import "./RestaurantIcon.style.scss";
 function RestaurantIcon({ name }) {
   return (
     <div className="RestaurantIcon">
-      <i className="fas fa-utensils"></i>
+      <i className="fas fa-map-marker-alt"></i>
       <div className="info"> {name}</div>
     </div>
   );

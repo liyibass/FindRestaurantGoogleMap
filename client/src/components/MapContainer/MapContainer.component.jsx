@@ -4,16 +4,22 @@ import GoogleMapReact from "google-map-react";
 import key from "../../key";
 import UserIcon from "../UserIcon/UserIcon.component";
 import RestaurantIcon from "../RestaurantIcon/RestaurantIcon.component";
+import { useSelector } from "react-redux";
 
 const AnyReactComponent = ({ text }) => <div></div>;
 
-function MapContainer({ restaurantList }) {
+function MapContainer() {
+  const restaurantList = useSelector(
+    (state) => state.restaurantList.restaurantList
+  );
+
+  console.log(restaurantList);
   const [mapCenter, setMapCenter] = useState({
     lat: 24.953881,
     lng: 121.225525,
   });
   const [userPosition, setUserPosition] = useState(mapCenter);
-  const [zoom, setZoom] = useState(15);
+  const [zoom, setZoom] = useState(17);
 
   const [currentMapState, setCurrentMapState] = useState(null);
   const [mapApi, setMapApi] = useState(null);

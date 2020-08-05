@@ -1,10 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const axios = require("axios");
-const { google } = require("googleapis");
-const urlParse = require("url-parse");
-const queryParse = require("query-string");
-const bodyParser = require("body-parser");
+const queryString = require("query-string");
 
 router.get("/", async (req, res) => {
   try {
@@ -18,21 +15,23 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.get("/restaurant/", async (req, res) => {
+router.get("/:searchField", async (req, res) => {
   const apiKey = process.env.GOOGLE_MAP_API_KEY;
+
+  const url = req.params.searchField;
+  let data = queryString.parse(url);
+
+  data.type = encodeURI(data.type);
+
   try {
-    const search =
-      "%E5%B0%8F%E5%90%83%20OR%20%E5%BF%AB%E9%A4%90%20OR%20%E9%A4%90%E5%BB%B3";
-
     const location = `24.953881,121.225525`;
-    const radius = "500";
-
     const fields =
       "name,geometry,formatted_address,business_status,types,photos";
+    const { type, radius } = data;
 
     axios
       .get(
-        `    https://maps.googleapis.com/maps/api/place/nearbysearch/json?keyword=${search}&inputtype=textquery&fields=${fields}&location=${location}&radius=${radius}&language=zh-TW&key=${apiKey}`
+        `    https://maps.googleapis.com/maps/api/place/nearbysearch/json?keyword=${type}&inputtype=textquery&fields=${fields}&location=${location}&radius=${radius}&language=zh-TW&key=${apiKey}`
       )
       .then((response) => {
         res.send(response.data);

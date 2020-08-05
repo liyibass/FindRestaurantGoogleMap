@@ -4,18 +4,15 @@ import axios from "axios";
 import "./styles/base/overall.scss";
 import MapContainer from "./components/MapContainer/MapContainer.component";
 import ListContainer from "./components/ListContainer/ListContainer.component";
+import SearchBar from "./components/SearchBar/SearchBar.component";
 
 function App() {
   const [restaurantList, setRestaurantList] = useState([]);
-  useEffect(() => {
-    axios
-      .get("http://localhost:5000/search/restaurant/")
-      .then((response) => setRestaurantList(response.data.results))
-      .catch((error) => console.log(error.message));
-  }, []);
+
   return (
     <div className="App">
-      <MapContainer restaurantList={restaurantList} />
+      <SearchBar />
+      <MapContainer />
       {/* <ListContainer restaurantList={restaurantList} /> */}
 
       <div className="restaurantList"></div>
