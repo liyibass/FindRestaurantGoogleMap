@@ -41,6 +41,13 @@ export const fetchRestaurantListFromApi = (searchField, mapCenter) => {
   };
 };
 
+export const setListOrder = (orderType) => {
+  return {
+    type: restaurantListTypes.SET_LIST_ORDER,
+    payload: orderType,
+  };
+};
+
 // export const setMapCenter=(newCenter)=>{
 //   return function (dispatch){
 

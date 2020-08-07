@@ -6,6 +6,7 @@ import {
   useLoadScript,
   Marker,
   InfoWindow,
+  DistanceMatrixService,
 } from "@react-google-maps/api";
 import key from "../../key";
 
@@ -23,27 +24,17 @@ function MapContainer() {
   const restaurantList = useSelector(
     (state) => state.restaurantList.restaurantList
   );
-  const [selectedRestaurant, setSelectedRestaurant] = useState(null);
+  const destinationArray = restaurantList.map((restaurant) => {
+    return restaurant.geometry.location;
+  });
 
-  const [mouseClickPosition, setMouseClickPosition] = useState([]);
+  const [selectedRestaurant, setSelectedRestaurant] = useState(null);
 
   // -------------------map control-------------------
   const mapRef = useRef();
   //將map api放至ref中
   const onMapLoad = useCallback((map) => {
     mapRef.current = map;
-  }, []);
-
-  //紀錄click當下數值
-  const onMapClick = useCallback((e) => {
-    setMouseClickPosition((prev) => [
-      ...prev,
-      {
-        lat: e.latLng.lat(),
-        lng: e.latLng.lng(),
-        time: new Date(),
-      },
-    ]);
   }, []);
 
   // 改變mapCenter或是zoom後重新搜尋
@@ -79,7 +70,6 @@ function MapContainer() {
       zoom={16}
       center={mapCenter}
       options={options}
-      onClick={onMapClick}
       onLoad={onMapLoad}
       // onDragEnd={onMapBoundsChange}
       onZoomChanged={onMapBoundsChange}
@@ -110,6 +100,21 @@ function MapContainer() {
           </div>
         </InfoWindow>
       ) : null}
+
+      <DistanceMatrixService
+        options={{
+          destinations: destinationArray,
+          origins: [mapCenter],
+          travelMode: "WALKING",
+        }}
+        callback={(response) => {
+          const durations = response.rows[0].elements;
+
+          restaurantList.forEach(
+            (restaurant, index) => (restaurant.duration = durations[index])
+          );
+        }}
+      />
     </GoogleMap>
   );
 }

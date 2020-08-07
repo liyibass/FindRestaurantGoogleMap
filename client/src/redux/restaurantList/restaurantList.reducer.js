@@ -44,6 +44,35 @@ const restaurantListReducer = (state = initialState, action) => {
       };
     }
 
+    case restaurantListTypes.SET_LIST_ORDER: {
+      const copyList = state.restaurantList.slice();
+      let newOrderArray = [];
+      switch (action.payload) {
+        case "distance":
+          newOrderArray = copyList.sort(function (a, b) {
+            return a.duration.distance.value > b.duration.distance.value
+              ? 1
+              : -1;
+          });
+          return {
+            ...state,
+            restaurantList: newOrderArray,
+          };
+
+        case "rating":
+          newOrderArray = copyList.sort(function (a, b) {
+            return a.rating < b.rating ? 1 : -1;
+          });
+          return {
+            ...state,
+            restaurantList: newOrderArray,
+          };
+
+        default:
+          break;
+      }
+    }
+
     default:
       return state;
   }

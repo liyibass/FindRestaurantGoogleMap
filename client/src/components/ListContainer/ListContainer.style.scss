@@ -3,21 +3,40 @@
 
 .ListContainer {
   width: 30%;
-  height: 100%;
+
   flex: auto;
   // position: absolute;
   // background-color: rgba($color: #000000, $alpha: 0.3);
   box-sizing: border-box;
   padding: 20px;
 
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
+  .restaurantList {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    height: 90%;
 
-  h4 {
-    padding: 0;
-    margin: 0;
+    .restaurantSection {
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      .star {
+        width: 25%;
+        i {
+          color: gold;
+        }
+      }
+      .title {
+        width: 70%;
+        h4 {
+          display: inline;
+          padding: 0;
+          margin: 0;
+        }
+      }
+    }
   }
+
   @include atSmall {
   }
 }
