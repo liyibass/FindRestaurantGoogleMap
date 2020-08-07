@@ -10,9 +10,7 @@ function App() {
     <div className="App">
       <SearchBar />
       <MapContainer />
-      {/* <ListContainer restaurantList={restaurantList} /> */}
-
-      <div className="restaurantList"></div>
+      <ListContainer />
     </div>
   );
 }

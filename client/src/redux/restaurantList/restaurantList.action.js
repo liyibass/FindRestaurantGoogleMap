@@ -25,7 +25,6 @@ export const fetchRestaurantFailure = (errorMessage) => {
 
 export const fetchRestaurantListFromApi = (searchField, mapCenter) => {
   return function (dispatch) {
-    console.log(mapCenter);
     const url = `type=${searchField.type}&radius=${searchField.radius}&lat=${mapCenter.lat}&lng=${mapCenter.lng}`;
     dispatch(fetchRestaurantRequest());
     axios

@@ -1,11 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import "./MapContainer.style.scss";
-import GoogleMapReact from "google-map-react";
-import key from "../../key";
-import UserIcon from "../UserIcon/UserIcon.component";
-import { useSelector, useDispatch } from "react-redux";
-import "dotenv";
-import { fetchRestaurantListFromApi } from "../../redux/restaurantList/restaurantList.action";
 
 import {
   GoogleMap,
@@ -13,6 +7,11 @@ import {
   Marker,
   InfoWindow,
 } from "@react-google-maps/api";
+import key from "../../key";
+
+import UserIcon from "../UserIcon/UserIcon.component";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchRestaurantListFromApi } from "../../redux/restaurantList/restaurantList.action";
 
 function MapContainer() {
   const dispatch = useDispatch();
@@ -75,45 +74,43 @@ function MapContainer() {
   if (!isLoaded) return "Loading Maps";
 
   return (
-    <div className="div">
-      <GoogleMap
-        mapContainerStyle={{ height: "100vh", width: "100vw" }}
-        zoom={16}
-        center={mapCenter}
-        options={options}
-        onClick={onMapClick}
-        onLoad={onMapLoad}
-        onDragEnd={onMapBoundsChange}
-        onZoomChanged={onMapBoundsChange}
-      >
-        <UserIcon position={userPosition} />
+    <GoogleMap
+      mapContainerStyle={{ height: "100vh", width: "70%" }}
+      zoom={16}
+      center={mapCenter}
+      options={options}
+      onClick={onMapClick}
+      onLoad={onMapLoad}
+      // onDragEnd={onMapBoundsChange}
+      onZoomChanged={onMapBoundsChange}
+    >
+      <UserIcon position={userPosition} />
 
-        {restaurantList.map((restaurant) => {
-          return (
-            <Marker
-              key={restaurant.name}
-              position={restaurant.geometry.location}
-              onClick={() => {
-                setSelectedRestaurant(restaurant);
-              }}
-            />
-          );
-        })}
-
-        {selectedRestaurant ? (
-          <InfoWindow
-            position={selectedRestaurant.geometry.location}
-            onCloseClick={() => {
-              setSelectedRestaurant(null);
+      {restaurantList.map((restaurant) => {
+        return (
+          <Marker
+            key={restaurant.name}
+            position={restaurant.geometry.location}
+            onClick={() => {
+              setSelectedRestaurant(restaurant);
             }}
-          >
-            <div>
-              <p>{selectedRestaurant.name}</p>
-            </div>
-          </InfoWindow>
-        ) : null}
-      </GoogleMap>
-    </div>
+          />
+        );
+      })}
+
+      {selectedRestaurant ? (
+        <InfoWindow
+          position={selectedRestaurant.geometry.location}
+          onCloseClick={() => {
+            setSelectedRestaurant(null);
+          }}
+        >
+          <div>
+            <p>{selectedRestaurant.name}</p>
+          </div>
+        </InfoWindow>
+      ) : null}
+    </GoogleMap>
   );
 }
 
