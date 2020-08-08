@@ -4,8 +4,8 @@ const restaurantListTypes = {
   FETCH_RESTAURANT_FAILURE: "FETCH_RESTAURANT_FAILURE",
 
   SET_LIST_ORDER: "SET_LIST_ORDER",
-
   SET_MAP_CENTER: " SET_MAP_CENTER",
+  SELECT_RESTAURANT: "SELECT_RESTAURANT",
 };
 
 export default restaurantListTypes;

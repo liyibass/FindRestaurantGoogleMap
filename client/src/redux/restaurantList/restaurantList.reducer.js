@@ -6,7 +6,7 @@ const initialState = {
     lng: 121.225525,
   },
   restaurantList: [],
-
+  selectedRestaurant: {},
   searchField: "",
   loading: false,
   error: "",
@@ -73,6 +73,12 @@ const restaurantListReducer = (state = initialState, action) => {
       }
     }
 
+    case restaurantListTypes.SELECT_RESTAURANT: {
+      return {
+        ...state,
+        selectedRestaurant: action.payload,
+      };
+    }
     default:
       return state;
   }

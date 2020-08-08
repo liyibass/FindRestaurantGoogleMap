@@ -7,20 +7,22 @@ function ListContainer() {
   const restaurantList = useSelector(
     (state) => state.restaurantList.restaurantList
   );
-  const dispatch = useDispatch();
 
-  const sortByDistance = () => {
-    dispatch(setListOrder("distance"));
-  };
+  const selectedRestaurant = useSelector(
+    (state) => state.restaurantList.selectedRestaurant
+  );
+  const dispatch = useDispatch();
 
   return (
     <div className="ListContainer">
-      <button onClick={() => dispatch(setListOrder("distance"))}>
-        按距離排序
-      </button>
-      <button onClick={() => dispatch(setListOrder("rating"))}>
-        按評分排序
-      </button>
+      <div className="buttonController">
+        <button onClick={() => dispatch(setListOrder("distance"))}>
+          按距離排序
+        </button>
+        <button onClick={() => dispatch(setListOrder("rating"))}>
+          按評分排序
+        </button>
+      </div>
       <div className="restaurantList">
         {restaurantList.map((restaurant) => {
           return (
@@ -35,6 +37,17 @@ function ListContainer() {
             </div>
           );
         })}
+      </div>
+      <div className="restaurantDetail">
+        <h3>{selectedRestaurant.name}</h3>
+        <div className="star">
+          <i className="fas fa-star"></i>
+          {selectedRestaurant.rating}
+        </div>
+        <p>地址：{selectedRestaurant.vicinity}</p>
+        <p>距離：{selectedRestaurant.duration.distance.text}</p>
+        <p>預估時間：{selectedRestaurant.duration.duration.text}</p>
+        {/* {console.log(selectedRestaurant.photos[0].html_attributions[0])} */}
       </div>
     </div>
   );

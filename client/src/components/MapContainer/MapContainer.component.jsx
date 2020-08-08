@@ -12,7 +12,10 @@ import key from "../../key";
 
 import UserIcon from "../UserIcon/UserIcon.component";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchRestaurantListFromApi } from "../../redux/restaurantList/restaurantList.action";
+import {
+  fetchRestaurantListFromApi,
+  setSelectedRestaurant,
+} from "../../redux/restaurantList/restaurantList.action";
 
 function MapContainer() {
   const dispatch = useDispatch();
@@ -28,7 +31,10 @@ function MapContainer() {
     return restaurant.geometry.location;
   });
 
-  const [selectedRestaurant, setSelectedRestaurant] = useState(null);
+  const selectedRestaurant = useSelector(
+    (state) => state.restaurantList.selectedRestaurant
+  );
+  // const [selectedRestaurant, setSelectedRestaurant] = useState(null);
 
   // -------------------map control-------------------
   const mapRef = useRef();
@@ -81,16 +87,17 @@ function MapContainer() {
           <Marker
             key={restaurant.name}
             position={restaurant.geometry.location}
-            onClick={() => {
-              setSelectedRestaurant(restaurant);
+            onMouseOver={() => {
+              dispatch(setSelectedRestaurant(restaurant));
             }}
           />
         );
       })}
 
-      {selectedRestaurant ? (
+      {/* {selectedRestaurant ? (
         <InfoWindow
           position={selectedRestaurant.geometry.location}
+          zIndex={-1}
           onCloseClick={() => {
             setSelectedRestaurant(null);
           }}
@@ -99,7 +106,7 @@ function MapContainer() {
             <p>{selectedRestaurant.name}</p>
           </div>
         </InfoWindow>
-      ) : null}
+      ) : null} */}
 
       <DistanceMatrixService
         options={{
@@ -108,11 +115,14 @@ function MapContainer() {
           travelMode: "WALKING",
         }}
         callback={(response) => {
-          const durations = response.rows[0].elements;
-
-          restaurantList.forEach(
-            (restaurant, index) => (restaurant.duration = durations[index])
-          );
+          if (response === null) {
+            return null;
+          } else if (response.rows.length) {
+            const durations = response.rows[0].elements;
+            restaurantList.forEach(
+              (restaurant, index) => (restaurant.duration = durations[index])
+            );
+          }
         }}
       />
     </GoogleMap>

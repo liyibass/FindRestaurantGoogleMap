@@ -10,11 +10,19 @@
   box-sizing: border-box;
   padding: 20px;
 
+  display: flex;
+  flex-direction: column;
+
+  .buttonController {
+    height: 10%;
+  }
+
   .restaurantList {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-    height: 90%;
+    // display: flex;
+    // flex-direction: column;
+    // justify-content: space-evenly;
+    height: 50%;
+    overflow: scroll;
 
     .restaurantSection {
       width: 100%;
@@ -35,6 +43,10 @@
         }
       }
     }
+  }
+
+  .restaurantDetail {
+    height: 40%;
   }
 
   @include atSmall {
