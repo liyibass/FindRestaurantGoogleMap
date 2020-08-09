@@ -17,7 +17,7 @@
     height: 10%;
   }
 
-  .restaurantList {
+  .ListSection {
     // display: flex;
     // flex-direction: column;
     // justify-content: space-evenly;
@@ -43,10 +43,6 @@
         }
       }
     }
-  }
-
-  .restaurantDetail {
-    height: 40%;
   }
 
   @include atSmall {

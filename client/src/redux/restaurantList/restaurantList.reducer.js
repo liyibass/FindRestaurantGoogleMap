@@ -25,9 +25,19 @@ const restaurantListReducer = (state = initialState, action) => {
     }
 
     case restaurantListTypes.FETCH_RESTAURANT_SUCCESS: {
+      let addNewPropertyArray = action.payload;
+
+      addNewPropertyArray.forEach((restaurant) => {
+        restaurant.selected = false;
+        restaurant.duration = {
+          distance: { text: "" },
+          duration: { text: "" },
+        };
+      });
+
       return {
         ...state,
-        restaurantList: action.payload,
+        restaurantList: addNewPropertyArray,
         searchField: action.searchField,
         loading: false,
         error: "",

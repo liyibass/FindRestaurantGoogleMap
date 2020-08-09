@@ -1,14 +1,10 @@
 import React from "react";
 import "./UserIcon.style.scss";
 
-function UserIcon() {
-  return (
-    <div className="UserIcon">
-      <div>
-        <i className="fas fa-user-circle"></i>
-      </div>
-    </div>
-  );
+import { Marker } from "@react-google-maps/api";
+
+function UserIcon({ position }) {
+  return <Marker className="UserIcon" position={position} />;
 }
 
 export default UserIcon;

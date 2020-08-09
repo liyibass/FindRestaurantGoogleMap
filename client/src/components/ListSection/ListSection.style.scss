@@ -1,11 +1,7 @@
 @import "../../styles/base/variables.scss";
 @import "../../styles/base/responsiveMixin.scss";
 
-.MapContainer {
-  width: 70%;
-  img {
-    // transform: scale(2);
-  }
+.ListSection {
   @include atSmall {
   }
 }

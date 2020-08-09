@@ -49,7 +49,6 @@ export const setListOrder = (orderType) => {
 };
 
 export const setSelectedRestaurant = (restaurant) => {
-  console.log(restaurant);
   return {
     type: restaurantListTypes.SELECT_RESTAURANT,
     payload: restaurant,
