@@ -6,6 +6,7 @@ function DetailSection() {
   const selectedRestaurant = useSelector(
     (state) => state.restaurantList.selectedRestaurant
   );
+
   if (selectedRestaurant.name) {
     return (
       <div className="DetailSection">
