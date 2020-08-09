@@ -1,7 +1,10 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import "./ListSection.style.scss";
-import { setSelectedRestaurant } from "../../redux/restaurantList/restaurantList.action";
+import {
+  setSelectedRestaurant,
+  restaurantNavigation,
+} from "../../redux/restaurantList/restaurantList.action";
 
 function ListSection() {
   const restaurantList = useSelector(
@@ -30,6 +33,9 @@ function ListSection() {
             style={listStyle}
             onMouseOver={() => {
               dispatch(setSelectedRestaurant(restaurant));
+            }}
+            onMouseDown={() => {
+              dispatch(restaurantNavigation(true));
             }}
           >
             <div className="star">

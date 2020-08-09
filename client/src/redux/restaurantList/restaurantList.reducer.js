@@ -7,9 +7,11 @@ const initialState = {
   },
   restaurantList: [],
   selectedRestaurant: {},
+
   searchField: "",
   loading: false,
   error: "",
+  navigationFlag: false,
 };
 
 const restaurantListReducer = (state = initialState, action) => {
@@ -21,6 +23,7 @@ const restaurantListReducer = (state = initialState, action) => {
         searchField: "",
         loading: true,
         error: "",
+        navigationFlag: false,
       };
     }
 
@@ -79,7 +82,9 @@ const restaurantListReducer = (state = initialState, action) => {
           };
 
         default:
-          break;
+          return {
+            ...state,
+          };
       }
     }
 
@@ -87,6 +92,13 @@ const restaurantListReducer = (state = initialState, action) => {
       return {
         ...state,
         selectedRestaurant: action.payload,
+      };
+    }
+
+    case restaurantListTypes.RESTAURANT_NAVIGATION: {
+      return {
+        ...state,
+        navigationFlag: action.payload,
       };
     }
     default:

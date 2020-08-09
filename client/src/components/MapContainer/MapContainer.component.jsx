@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from "react";
+import React, { useState, useCallback, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import "./MapContainer.style.scss";
 
@@ -7,48 +7,36 @@ import {
   useLoadScript,
   DistanceMatrixService,
 } from "@react-google-maps/api";
+import GoogleMapReact from "google-map-react";
 import key from "../../key";
 
 import UserIcon from "../UserIcon/UserIcon.component";
-import { fetchRestaurantListFromApi } from "../../redux/restaurantList/restaurantList.action";
-
 import RestaurantIcon from "../RestaurantIcon/RestaurantIcon.component";
+import DirectionsHendler from "../DirectionsHendler/DirectionsHendler.component";
+
+import { fetchRestaurantListFromApi } from "../../redux/restaurantList/restaurantList.action";
+import { useEffect } from "react";
 
 function MapContainer() {
   const dispatch = useDispatch();
-
   const mapCenter = useSelector((state) => state.restaurantList.mapCenter);
   const searchField = useSelector((state) => state.restaurantList.searchField);
   const [userPosition, setUserPosition] = useState(mapCenter);
-
   const restaurantList = useSelector(
     (state) => state.restaurantList.restaurantList
   );
   const destinationArray = restaurantList.map((restaurant) => {
     return restaurant.geometry.location;
   });
-
-  const selectedRestaurant = useSelector(
-    (state) => state.restaurantList.selectedRestaurant
+  const navigationFlag = useSelector(
+    (state) => state.restaurantList.navigationFlag
   );
 
   // -------------------map control-------------------
-  const mapRef = useRef();
-  //將map api放至ref中
-  const onMapLoad = useCallback((map) => {
-    mapRef.current = map;
-  }, []);
 
   // 改變mapCenter或是zoom後重新搜尋
   const onMapBoundsChange = () => {
-    if (mapRef.current !== undefined) {
-      const newMapCenter = {
-        lat: mapRef.current.center.lat(),
-        lng: mapRef.current.center.lng(),
-      };
-
-      dispatch(fetchRestaurantListFromApi(searchField, newMapCenter));
-    }
+    // dispatch(fetchRestaurantListFromApi(searchField, newMapCenter));
   };
 
   const options = {
@@ -57,56 +45,56 @@ function MapContainer() {
     zoomControl: true,
   };
 
-  // -------------------map init-------------------
-  const libraries = ["places"];
-  const { isLoaded, loadError } = useLoadScript({
-    googleMapsApiKey: key,
-    libraries,
-  });
-  if (loadError) return "Error loading maps";
-  if (!isLoaded) return "Loading Maps";
-
   return (
-    <div className="MapContainer">
-      <GoogleMap
-        mapContainerStyle={{ height: "100vh", width: "100%" }}
-        zoom={16}
-        center={mapCenter}
+    <div style={{ height: "100vh", width: "100%" }}>
+      <GoogleMapReact
+        bootstrapURLKeys={{ key: key }}
+        defaultZoom={16}
+        defaultCenter={mapCenter}
         options={options}
-        onLoad={onMapLoad}
         onZoomChanged={onMapBoundsChange}
       >
-        <UserIcon position={userPosition} />
+        <UserIcon lat={userPosition.lat} lng={userPosition.lng} />
 
         {restaurantList.map((restaurant) => {
           return (
-            <RestaurantIcon restaurant={restaurant} key={restaurant.name} />
+            <RestaurantIcon
+              restaurant={restaurant}
+              key={restaurant.name}
+              lat={restaurant.geometry.location.lat}
+              lng={restaurant.geometry.location.lng}
+            />
           );
         })}
 
         {/* 幫每個餐廳新增props：距離/時間 */}
-        <DistanceMatrixService
-          options={{
-            // 輸入起始點以及所有餐廳Array，以得到每個餐廳的距離/時間
-            destinations: destinationArray,
-            origins: [mapCenter],
-            travelMode: "WALKING",
-          }}
-          callback={(response) => {
-            if (response === null) {
-              return null;
-            } else if (response.rows.length) {
-              const durations = response.rows[0].elements;
-              // 一個個加入每個餐廳的props
-              restaurantList.forEach(
-                (restaurant, index) => (restaurant.duration = durations[index])
-              );
-            }
-          }}
-        />
-      </GoogleMap>
+        {/* <DistanceMatrixService
+      options={{
+        // 輸入起始點以及所有餐廳Array，以得到每個餐廳的距離/時間
+        destinations: destinationArray,
+        origins: [mapCenter],
+        travelMode: "WALKING",
+      }}
+      callback={(response) => {
+        if (response === null) {
+          return null;
+        } else if (response.rows.length) {
+          const durations = response.rows[0].elements;
+          // 一個個加入每個餐廳的props
+          restaurantList.forEach(
+            (restaurant, index) => (restaurant.duration = durations[index])
+          );
+        }
+      }}
+    />
+    <DirectionsHendler navigationFlag={navigationFlag} /> */}
+      </GoogleMapReact>
     </div>
   );
+
+  // if (loadError) return "Error loading maps";
+  // if (!isLoaded) return "Loading Maps";
+  // return isLoaded ? renderMap() : null;
 }
 
 export default MapContainer;

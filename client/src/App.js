@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 import "./styles/base/overall.scss";
 import MapContainer from "./components/MapContainer/MapContainer.component";

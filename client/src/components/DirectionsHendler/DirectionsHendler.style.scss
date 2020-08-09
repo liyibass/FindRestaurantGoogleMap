@@ -1,10 +1,7 @@
 @import "../../styles/base/variables.scss";
 @import "../../styles/base/responsiveMixin.scss";
 
-.RestaurantIcon {
-  // opacity: 0.5;
-  color: rgb(238, 98, 98);
-  transform: translate(-12px, -32px);
+.DirectionsHendler {
   @include atSmall {
   }
 }

@@ -1,9 +1,6 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import "./RestaurantIcon.style.scss";
-import { setSelectedRestaurant } from "../../redux/restaurantList/restaurantList.action";
-import { Marker } from "@react-google-maps/api";
-import marker from "../../images/marker.svg";
 
 function RestaurantIcon({ restaurant }) {
   const selectedRestaurant = useSelector(
@@ -11,43 +8,21 @@ function RestaurantIcon({ restaurant }) {
   );
   const dispatch = useDispatch();
 
+  let RestaurantMarkerStyle;
   if (selectedRestaurant.name === restaurant.name) {
-    return (
-      <Marker
-        className="RestaurantIcon"
-        key={restaurant.name}
-        position={restaurant.geometry.location}
-        onMouseOver={() => {
-          dispatch(setSelectedRestaurant(restaurant));
-        }}
-        icon={{
-          url: `${marker}`,
-          scaledSize: {
-            height: 40,
-            width: 40,
-          },
-        }}
-      />
-    );
+    RestaurantMarkerStyle = {
+      fontSize: "3rem",
+    };
   } else {
-    return (
-      <Marker
-        className="RestaurantIcon"
-        key={restaurant.name}
-        position={restaurant.geometry.location}
-        onMouseOver={() => {
-          dispatch(setSelectedRestaurant(restaurant));
-        }}
-        icon={{
-          url: `${marker}`,
-          scaledSize: {
-            height: 30,
-            width: 30,
-          },
-        }}
-      />
-    );
+    RestaurantMarkerStyle = {
+      fontSize: "2rem",
+    };
   }
+  return (
+    <div className="RestaurantIcon" style={RestaurantMarkerStyle}>
+      <i className="fas fa-map-pin"></i>
+    </div>
+  );
 }
 
-export default RestaurantIcon;
+export default React.memo(RestaurantIcon);

@@ -3,6 +3,8 @@
 
 .UserIcon {
   font-size: 2rem;
+  color: rgb(66, 98, 241);
+  transform: translate(-12px, -32px);
   @include atSmall {
   }
 }

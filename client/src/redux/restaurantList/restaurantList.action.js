@@ -54,3 +54,9 @@ export const setSelectedRestaurant = (restaurant) => {
     payload: restaurant,
   };
 };
+export const restaurantNavigation = (flag) => {
+  return {
+    type: restaurantListTypes.RESTAURANT_NAVIGATION,
+    payload: flag,
+  };
+};
