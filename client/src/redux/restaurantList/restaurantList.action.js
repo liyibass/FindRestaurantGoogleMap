@@ -50,13 +50,20 @@ export const setListOrder = (orderType) => {
 
 export const setSelectedRestaurant = (restaurant) => {
   return {
-    type: restaurantListTypes.SELECT_RESTAURANT,
+    type: restaurantListTypes.SET_SELECT_RESTAURANT,
     payload: restaurant,
   };
 };
-export const restaurantNavigation = (flag) => {
+export const restaurantNavigation = (restaurant) => {
   return {
     type: restaurantListTypes.RESTAURANT_NAVIGATION,
-    payload: flag,
+    payload: restaurant,
+  };
+};
+
+export const setMapApi = (maps) => {
+  return {
+    type: restaurantListTypes.SET_MAP_API,
+    payload: maps,
   };
 };

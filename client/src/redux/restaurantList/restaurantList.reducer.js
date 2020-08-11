@@ -6,12 +6,12 @@ const initialState = {
     lng: 121.225525,
   },
   restaurantList: [],
+  searchField: { type: "小吃", radius: 500 },
   selectedRestaurant: {},
-
-  searchField: "",
+  destination: {},
   loading: false,
   error: "",
-  navigationFlag: false,
+  mapApi: {},
 };
 
 const restaurantListReducer = (state = initialState, action) => {
@@ -20,7 +20,6 @@ const restaurantListReducer = (state = initialState, action) => {
       return {
         ...state,
         restaurantList: [],
-        searchField: "",
         loading: true,
         error: "",
         navigationFlag: false,
@@ -28,20 +27,39 @@ const restaurantListReducer = (state = initialState, action) => {
     }
 
     case restaurantListTypes.FETCH_RESTAURANT_SUCCESS: {
+      // 為每個restaurant添加distance props
       let addNewPropertyArray = action.payload;
-
-      addNewPropertyArray.forEach((restaurant) => {
-        restaurant.selected = false;
-        restaurant.duration = {
-          distance: { text: "" },
-          duration: { text: "" },
-        };
+      const destinationArray = addNewPropertyArray.map((restaurant) => {
+        return restaurant.geometry.location;
       });
+
+      // 使用map api的DistanceMatrixService
+      const service = new state.mapApi.DistanceMatrixService();
+      service.getDistanceMatrix(
+        {
+          origins: [state.mapCenter],
+          destinations: destinationArray,
+          travelMode: "WALKING",
+        },
+        callback
+      );
+      function callback(response, status) {
+        if (response === null) {
+          return null;
+        } else if (response.rows.length) {
+          const durations = response.rows[0].elements;
+          // 一個個加入每個餐廳的props
+          addNewPropertyArray.forEach((restaurant, index) => {
+            restaurant.duration = durations[index];
+          });
+        }
+      }
 
       return {
         ...state,
         restaurantList: addNewPropertyArray,
         searchField: action.searchField,
+        selectedRestaurant: addNewPropertyArray[0],
         loading: false,
         error: "",
       };
@@ -51,7 +69,6 @@ const restaurantListReducer = (state = initialState, action) => {
       return {
         ...state,
         restaurantList: [],
-        searchField: action.searchField,
         loading: false,
         error: action.payload,
       };
@@ -88,7 +105,7 @@ const restaurantListReducer = (state = initialState, action) => {
       }
     }
 
-    case restaurantListTypes.SELECT_RESTAURANT: {
+    case restaurantListTypes.SET_SELECT_RESTAURANT: {
       return {
         ...state,
         selectedRestaurant: action.payload,
@@ -98,9 +115,18 @@ const restaurantListReducer = (state = initialState, action) => {
     case restaurantListTypes.RESTAURANT_NAVIGATION: {
       return {
         ...state,
-        navigationFlag: action.payload,
+        destination: action.payload,
       };
     }
+
+    case restaurantListTypes.SET_MAP_API: {
+      console.log(action.payload);
+      return {
+        ...state,
+        mapApi: action.payload,
+      };
+    }
+
     default:
       return state;
   }

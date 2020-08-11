@@ -7,7 +7,7 @@ function DetailSection() {
     (state) => state.restaurantList.selectedRestaurant
   );
 
-  if (selectedRestaurant.name) {
+  if (selectedRestaurant.duration) {
     return (
       <div className="DetailSection">
         <h3>{selectedRestaurant.name}</h3>
@@ -26,4 +26,4 @@ function DetailSection() {
   }
 }
 
-export default DetailSection;
+export default React.memo(DetailSection);
